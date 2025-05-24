@@ -1,8 +1,16 @@
 from pathlib import Path
+import os
+from datetime import timedelta
+from pathlib import Path
+from dotenv import load_dotenv
+import sys
+
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+sys.path.append(str(BASE_DIR))
 
-SECRET_KEY = "django-insecure-8)g)ft9oo9=1tjtw^xxr=$&g7m*2lj3s3bne7llnw^@hhv-8pn"
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 DEBUG = True
 
@@ -55,8 +63,12 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.getenv("NAME"),
+        "USER" : os.getenv("USER"),
+        'PASSWORD' : os.getenv('PASSWORD'),
+        'HOST' : os.getenv('HOST'),
+        'PORT' : os.getenv('PORT'),
     }
 }
 
@@ -97,11 +109,20 @@ SIMPLE_JWT = {
     'UPDATE_LAST_LOGIN': True,
 }
 
+STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
+STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLIC_KEY')
+
+# Redis settings
+REDIS_HOST = os.getenv('REDIS_HOST', 'localhost')
+REDIS_PORT = os.getenv('REDIS_PORT', 6379)
+REDIS_DB = os.getenv('REDIS_DB', 0)
+REDIS_PASSWORD = os.getenv('REDIS_PASSWORD', '')
+
 # Telegram settings
-TELEGRAM_BOT_TOKEN = env('TELEGRAM_BOT_TOKEN', default='')
-TELEGRAM_WEBHOOK_URL = env('TELEGRAM_WEBHOOK_URL', default='')
+TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', default='')
+TELEGRAM_WEBHOOK_URL = os.getenv('TELEGRAM_WEBHOOK_URL', default='')
 
 # Celery settings
-CELERY_BROKER_URL = env('CELERY_BROKER_URL', default='redis://localhost:6379/0')
-CELERY_RESULT_BACKEND = env('CELERY_RESULT_BACKEND', default='redis://localhost:6379/0')
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', default='redis://localhost:6379/0')
+CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND', default='redis://localhost:6379/0')
 CELERY_TIMEZONE = 'UTC'
