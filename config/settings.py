@@ -25,7 +25,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 
     'rest_framework',
-    'drf-spectacula'
+    'drf-spectacular'
     'django_celery_beat',
     'habit',
     'user',
@@ -99,7 +99,7 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-AUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL = 'user.User'
 
 # JWT настройки
 SIMPLE_JWT = {

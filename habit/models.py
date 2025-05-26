@@ -6,7 +6,7 @@ class Habit(models.Model):
         DAILY = 1, 'Ежедневно'
         WEEKLY = 7, 'Еженедельно'
 
-    user = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='habits')
+    user = models.ForeignKey('user.User', on_delete=models.CASCADE, related_name='habits')
     place = models.CharField(max_length=255, verbose_name='Место выполнения')
     time = models.TimeField(verbose_name='Время выполнения')
     action = models.CharField(max_length=255, verbose_name='Действие')
