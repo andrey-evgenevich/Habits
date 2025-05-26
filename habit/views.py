@@ -18,12 +18,12 @@ class HabitViewSet(viewsets.ModelViewSet):
     ordering = ['time']
 
     def get_queryset(self):
-        queryset = Habit.objects.select_related('user', 'linked_habit')
-
-        if self.action == 'public':
-            return queryset.filter(is_public=True)
-
-        return queryset.filter(user=self.request.user)
+        return self.queryset.filter(user=self.request.user)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+class PublicHabitViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Habit.objects.filter(is_public=True)
+    serializer_class = HabitSerializer
+    permission_classes = [permissions.AllowAny]
