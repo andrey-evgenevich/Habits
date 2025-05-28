@@ -1,4 +1,3 @@
-from pathlib import Path
 import os
 from datetime import timedelta
 from pathlib import Path
@@ -25,10 +24,11 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 
     'rest_framework',
-    'drf-spectacular'
+    'drf_spectacular',
     'django_celery_beat',
     'habit',
     'user',
+    'notifications'
 
 ]
 
@@ -126,3 +126,14 @@ TELEGRAM_WEBHOOK_URL = os.getenv('TELEGRAM_WEBHOOK_URL', default='')
 CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', default='redis://localhost:6379/0')
 CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND', default='redis://localhost:6379/0')
 CELERY_TIMEZONE = 'UTC'
+
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Habits',
+    'DESCRIPTION': 'Habits',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+}

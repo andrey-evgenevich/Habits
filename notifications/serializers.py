@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Notification
-from habits.serializers import HabitSerializer
+from habit.serializers import HabitSerializer
 
 
 class NotificationSerializer(serializers.ModelSerializer):
