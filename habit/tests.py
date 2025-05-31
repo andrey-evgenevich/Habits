@@ -1,18 +1,8 @@
-import pytest
 from rest_framework import status
 from rest_framework.test import APIClient
-from habit.models import Habit
-from user.models import User
-import pytest
-from django.core.exceptions import ValidationError
-from habit.models import Habit
-from user.models import User
 from datetime import time
-import pytest
 from rest_framework.test import APIRequestFactory
 from habit.permissions import IsOwnerOrReadPublic
-from habit.models import Habit
-from user.models import User
 import pytest
 from django.core.exceptions import ValidationError
 from habit.validators import validate_habit_consistency
