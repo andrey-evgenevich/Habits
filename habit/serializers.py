@@ -3,6 +3,14 @@ from .models import Habit
 from .validators import validate_habit_consistency
 
 class HabitSerializer(serializers.ModelSerializer):
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        if hasattr(instance.time, 'strftime'):
+            representation['time'] = instance.time.strftime('%H:%M')
+        else:
+            representation['time'] = str(instance.time)
+        return representation
+
     class Meta:
         model = Habit
         fields = '__all__'
@@ -15,9 +23,3 @@ class HabitSerializer(serializers.ModelSerializer):
         habit = Habit(**data)
         validate_habit_consistency(habit)
         return data
-
-    def to_representation(self, instance):
-        """Оптимизация вывода данных"""
-        representation = super().to_representation(instance)
-        representation['time'] = instance.time.strftime('%H:%M')
-        return representation

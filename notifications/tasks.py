@@ -6,32 +6,20 @@ from django.conf import settings
 
 
 @shared_task(bind=True, max_retries=3)
-def send_habit_notification(self, habit_id):
+def send_habit_notification(self, habit_id, countdown=1):
     try:
-        habit = Habit.objects.select_related('user').get(pk=habit_id)
-
+        habit = Habit.objects.get(pk=habit_id)
         if not habit.user.telegram_chat_id:
             return
-
-        message = (
-            f"⏰ Напоминание о привычке:\n"
-            f"Действие: {habit.action}\n"
-            f"Место: {habit.place}\n"
-            f"Время: {habit.time.strftime('%H:%M')}\n"
-            f"Длительность: {habit.duration} сек"
-        )
-
-        requests.post(
+        message = f"⏰ Напоминание о привычке:\nДействие: {habit.action}\nМесто: {habit.place}\nВремя: {habit.time}\nДлительность: {habit.duration} сек"
+        response = requests.post(
             f"https://api.telegram.org/bot{settings.TELEGRAM_BOT_TOKEN}/sendMessage",
-            json={
-                'chat_id': habit.user.telegram_chat_id,
-                'text': message,
-                'parse_mode': 'Markdown'
-            },
+            json={'chat_id': habit.user.telegram_chat_id, 'text': message},
             timeout=10
         )
+        response.raise_for_status()
     except Exception as exc:
-        self.retry(exc=exc, countdown=60)
+        raise self.retry(exc=exc, countdown=countdown)
 
 
 @shared_task
@@ -41,7 +29,6 @@ def check_due_habits():
     current_time = now.time()
     current_weekday = now.weekday()
 
-    # Оптимизированный запрос с учетом периодичности
     habits = Habit.objects.filter(
         time__hour=current_time.hour,
         time__minute=current_time.minute,

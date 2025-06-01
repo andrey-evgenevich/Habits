@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from rest_framework.templatetags.rest_framework import data
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth.hashers import make_password
 
@@ -28,10 +29,17 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 
 class TelegramConnectionSerializer(serializers.Serializer):
-    telegram_token = serializers.CharField(max_length=50)
+    telegram_token = serializers.CharField()
+    chat_id = serializers.CharField()
 
     def validate_telegram_token(self, value):
         user = User.objects.filter(telegram_token=value).first()
         if not user:
             raise serializers.ValidationError("Invalid Telegram token")
         return user
+
+    def validate(self, attrs):
+        return {
+            'user': attrs['telegram_token'],
+            'chat_id': attrs['chat_id']
+        }
