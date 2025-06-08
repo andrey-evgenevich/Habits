@@ -35,7 +35,7 @@ class TelegramConnectView(APIView):
         serializer = TelegramConnectionSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        user = serializer.validated_data
+        user = serializer.validated_data["user"]
         if user != request.user:
             return Response(
                 {"detail": "You can only connect your own account"},

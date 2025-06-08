@@ -128,14 +128,14 @@ class NotificationTasksTest(TestCase):
         send_habit_notification(self.habit.id)
         mock_post.assert_not_called()
 
-    # @patch('notifications.tasks.requests.post')
-    # def test_send_habit_notification_retry_on_failure(self, mock_post):
-    #     mock_post.side_effect = Exception('Test error')
-    #     try:
-    #         send_habit_notification.s(self.habit.id).apply()
-    #     except send_habit_notification.retry:
-    #         pass
-    #     self.assertEqual(mock_post.call_count, 3)
+    @patch('notifications.tasks.requests.post')
+    def test_send_habit_notification_retry_on_failure(self, mock_post):
+        mock_post.side_effect = Exception('Test error')
+        try:
+            send_habit_notification.s(self.habit.id).apply()
+        except send_habit_notification.retry:
+            pass
+        self.assertEqual(mock_post.call_count, 4)
 
     @patch('notifications.tasks.send_habit_notification.delay')
     def test_check_due_habits(self, mock_send):

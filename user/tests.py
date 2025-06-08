@@ -145,15 +145,15 @@ class UserViewsTest(TestCase):
         self.user.refresh_from_db()
         self.assertEqual(response.data['telegram_token'], self.user.telegram_token)
 
-    # def test_telegram_connection(self):
-    #     self.client.force_authenticate(user=self.user)
-    #     token = self.user.generate_telegram_token()
-    #
-    #     response = self.client.post('/api/users/telegram/connect/', {
-    #         'telegram_token': token,
-    #         'chat_id': '12345'
-    #     }, format='json')
-    #
-    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
-    #     self.user.refresh_from_db()
-    #     self.assertEqual(self.user.telegram_chat_id, '12345')
+    def test_telegram_connection(self):
+        self.client.force_authenticate(user=self.user)
+        token = self.user.generate_telegram_token()
+
+        response = self.client.post('/api/users/telegram/connect/', {
+            'telegram_token': token,
+            'chat_id': '12345'
+        }, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.telegram_chat_id, '12345')
