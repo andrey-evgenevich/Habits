@@ -9,12 +9,12 @@ class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notification
         fields = [
-            'id',
-            'habit',
-            'scheduled_time',
-            'status',
-            'created_at',
-            'updated_at',
-            'error_message'
+            "id",
+            "habit",
+            "scheduled_time",
+            "status",
+            "created_at",
+            "updated_at",
+            "error_message",
         ]
         read_only_fields = fields

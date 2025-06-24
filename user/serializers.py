@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from rest_framework.templatetags.rest_framework import data
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth.hashers import make_password
 
@@ -9,22 +8,22 @@ User = get_user_model()
 
 class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
-        validated_data['password'] = make_password(validated_data['password'])
+        validated_data["password"] = make_password(validated_data["password"])
         return super().create(validated_data)
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'telegram_chat_id', 'password']
+        fields = ["id", "username", "email", "telegram_chat_id", "password"]
         extra_kwargs = {
-            'password': {'write_only': True},
+            "password": {"write_only": True},
         }
-        read_only_fields = ['id']
+        read_only_fields = ["id"]
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         data = super().validate(attrs)
-        data['user'] = UserSerializer(self.user).data
+        data["user"] = UserSerializer(self.user).data
         return data
 
 
@@ -39,7 +38,4 @@ class TelegramConnectionSerializer(serializers.Serializer):
         return user
 
     def validate(self, attrs):
-        return {
-            'user': attrs['telegram_token'],
-            'chat_id': attrs['chat_id']
-        }
+        return {"user": attrs["telegram_token"], "chat_id": attrs["chat_id"]}
