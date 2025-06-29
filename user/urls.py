@@ -5,14 +5,18 @@ from .views import (
     UserDetailView,
     CustomTokenObtainPairView,
     TelegramConnectView,
-    GenerateTelegramTokenView
+    GenerateTelegramTokenView,
 )
 
 urlpatterns = [
-    path('register/', UserCreateView.as_view(), name='user-register'),
-    path('me/', UserDetailView.as_view(), name='user-detail'),
-    path('token/', CustomTokenObtainPairView.as_view(), name='token-obtain-pair'),
-    path('token/refresh/', TokenRefreshView.as_view(), name='token-refresh'),
-    path('telegram/connect/', TelegramConnectView.as_view(), name='telegram-connect'),
-    path('telegram/token/', GenerateTelegramTokenView.as_view(), name='generate-telegram-token'),
+    path("register/", UserCreateView.as_view(), name="user-register"),
+    path("me/", UserDetailView.as_view(), name="user-detail"),
+    path("token/", CustomTokenObtainPairView.as_view(), name="token-obtain-pair"),
+    path("token/refresh/", TokenRefreshView.as_view(), name="token-refresh"),
+    path("telegram/connect/", TelegramConnectView.as_view(), name="telegram-connect"),
+    path(
+        "telegram/token/",
+        GenerateTelegramTokenView.as_view(),
+        name="generate-telegram-token",
+    ),
 ]

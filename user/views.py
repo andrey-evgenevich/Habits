@@ -1,8 +1,11 @@
-from django.shortcuts import render
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .serializers import UserSerializer, CustomTokenObtainPairSerializer, TelegramConnectionSerializer
+from .serializers import (
+    UserSerializer,
+    CustomTokenObtainPairSerializer,
+    TelegramConnectionSerializer,
+)
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.views import TokenObtainPairView
 
@@ -39,15 +42,14 @@ class TelegramConnectView(APIView):
         if user != request.user:
             return Response(
                 {"detail": "You can only connect your own account"},
-                status=status.HTTP_403_FORBIDDEN
+                status=status.HTTP_403_FORBIDDEN,
             )
 
-        user.telegram_chat_id = request.data.get('chat_id')
+        user.telegram_chat_id = request.data.get("chat_id")
         user.save()
 
         return Response(
-            {"detail": "Telegram successfully connected"},
-            status=status.HTTP_200_OK
+            {"detail": "Telegram successfully connected"}, status=status.HTTP_200_OK
         )
 
 
@@ -56,7 +58,4 @@ class GenerateTelegramTokenView(APIView):
 
     def post(self, request):
         token = request.user.generate_telegram_token()
-        return Response(
-            {"telegram_token": token},
-            status=status.HTTP_200_OK
-        )
+        return Response({"telegram_token": token}, status=status.HTTP_200_OK)
