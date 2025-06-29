@@ -94,7 +94,7 @@ jobs:
 
       - name: Deploy to Server
         run: |
-          ssh -T -o StrictHostKeyChecking=no habits@$158.160.132.169 << 'EOF'
+          ssh -T -o StrictHostKeyChecking=no habits@158.160.132.169 << 'EOF'
             echo ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }} | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
           
             cd /root/LMS
